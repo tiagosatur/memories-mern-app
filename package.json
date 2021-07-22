@@ -1,0 +1,14 @@
+{
+  "name": "memories-mern-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:tiagosatur/memories-mern-app.git",
+  "author": "tiagosatur <tiagosatur@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "concurrently \"cd server && yarn start\" \"cd client && yarn start\" "
+  },
+  "dependencies": {
+    "concurrently": "^6.2.0"
+  }
+}
