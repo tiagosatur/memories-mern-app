@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import {
   Container,
   AppBar,
@@ -9,6 +10,7 @@ import {
 } from "@material-ui/core";
 import memoriesLogo from "./images/memoriesLogo.png";
 import { Form, Posts } from "./components";
+import { getPosts } from "./redux/actions/posts";
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -29,6 +31,11 @@ const useStyles = makeStyles(() => ({
 
 function App() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(getPosts());
+  }, [dispatch]);
   return (
     <Container maxwidth="lg">
       <AppBar position="static" color="inherit" className={classes.appBar}>
