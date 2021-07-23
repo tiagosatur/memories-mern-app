@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
   },
   heading: {
-    color: "rgba(0,183,255, 1)",
+    color: "#393E46",
   },
   image: {
     marginLeft: "15px",
@@ -51,7 +51,6 @@ function App() {
       </AppBar>
       <Grow in>
         <Container>
-          pela mor
           <Grid
             container
             justify="space-between"
