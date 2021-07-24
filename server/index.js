@@ -13,7 +13,11 @@ app.use(cors());
 
 app.use("/posts", postRoutes);
 
-const PORT = process.env.SERVER_PORT || 5000;
+app.get("/", (req, res) => {
+  res.send("Welcome to Memories API");
+});
+
+const PORT = process.env.PORT || 5000;
 
 mongoose
   .connect(process.env.MONGODB_CONNECTION_URL, {
