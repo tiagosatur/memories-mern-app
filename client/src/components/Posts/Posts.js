@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 const Posts = ({ setCurrentId }) => {
   const classes = useStyles();
   const posts = useSelector((state) => state.posts);
-  console.log("🚀 ~ Posts ~ posts", posts);
 
   return !posts.length ? (
     <CircularProgress />
