@@ -47,7 +47,7 @@ const initialPostData = {
   creator: "",
   title: "",
   message: "",
-  tags: "",
+  tags: [],
   selectedFile: "",
 };
 
@@ -68,12 +68,19 @@ const Form = ({ currentId, setCurrentId }) => {
     setPostData(initialPostData);
   };
 
+  const formatPostData = () => {
+    return {
+      ...postData,
+      tags: postData.tags.split(/[ ,]+/).filter(Boolean),
+    };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     currentId === null
-      ? dispatch(createPost(postData))
-      : dispatch(updatePost(currentId, postData));
+      ? dispatch(createPost(formatPostData(postData)))
+      : dispatch(updatePost(currentId, formatPostData(postData)));
 
     clearForm();
   };
@@ -136,9 +143,9 @@ const Form = ({ currentId, setCurrentId }) => {
           label="Tags (coma separated)"
           fullWidth
           value={postData.tags}
-          onChange={(e) =>
-            setPostData({ ...postData, tags: e.target.value.split(",") })
-          }
+          onChange={(e) => {
+            setPostData({ ...postData, tags: e.target.value });
+          }}
         />
         <div className={classes.fileInput}>
           <Button variant="outlined" component="label" size="large">

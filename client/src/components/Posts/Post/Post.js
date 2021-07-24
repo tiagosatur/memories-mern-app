@@ -59,9 +59,6 @@ const useStyles = makeStyles({
   title: {
     padding: "0 16px",
   },
-  message: {
-    color: "#393E46",
-  },
   cardActions: {
     padding: "0 16px 8px 16px",
     display: "flex",
@@ -117,13 +114,19 @@ const Post = ({ post, setCurrentId }) => {
         {post.title}
       </Typography>
       <CardContent>
-        <Typography variant="body2" gutterBottom className={classes.message}>
+        <Typography
+          variant="body2"
+          component="p"
+          className={classes.message}
+          color="textSecondary"
+        >
           {post.message}
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
         <Button size="small" onClick={handleLike} className={classes.buttons}>
           <ThumbUpAltIcon fontSize="small" />
+          &nbsp;
           {`Like (${post.likeCount})`}
         </Button>
         <Button size="small" onClick={handleDelete} className={classes.buttons}>

@@ -12,7 +12,7 @@ import memoriesLogo from "./images/memoriesLogo.png";
 import { Form, Posts } from "./components";
 import { getPosts } from "./redux/actions/posts";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     borderRadius: 15,
     margin: "30px 0",
@@ -20,12 +20,20 @@ const useStyles = makeStyles(() => ({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    padding: 16,
   },
   heading: {
     color: "#393E46",
   },
   image: {
     marginLeft: "15px",
+  },
+  mainContainer: {
+    flexDirection: "column-reverse",
+
+    [theme.breakpoints.up("md")]: {
+      flexDirection: "row",
+    },
   },
 }));
 
@@ -40,14 +48,14 @@ function App() {
   return (
     <Container maxwidth="lg">
       <AppBar position="static" color="inherit" className={classes.appBar}>
-        <Typography variant="h2" align="center" className={classes.heading}>
+        <Typography variant="h3" align="center" className={classes.heading}>
           Memories
         </Typography>
         <img
           src={memoriesLogo}
           className={classes.image}
           alt="Memories logo"
-          height="60"
+          height="40"
         />
       </AppBar>
       <Grow in>
@@ -57,11 +65,12 @@ function App() {
             justify="space-between"
             alignItems="stretch"
             spacing={3}
+            className={classes.mainContainer}
           >
-            <Grid item xs={12} sm={7}>
+            <Grid item xs={12} md={7}>
               <Posts currentId={currentId} setCurrentId={setCurrentId} />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} md={4}>
               <Form currentId={currentId} setCurrentId={setCurrentId} />
             </Grid>
           </Grid>
