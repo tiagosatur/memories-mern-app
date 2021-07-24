@@ -12,6 +12,12 @@ export default (posts = [], action) => {
       );
     case ACTION_TYPES.DELETE_POST:
       return posts.filter((post) => post._id !== action.payload.id);
+    case ACTION_TYPES.LIKE_POST:
+      return posts.map((post) =>
+        post._id === action.payload.id
+          ? { ...post, likeCount: action.payload.likeCount }
+          : post
+      );
     default:
       return posts;
   }

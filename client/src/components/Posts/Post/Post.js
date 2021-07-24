@@ -13,7 +13,7 @@ import {
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAltSharp";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import { deletePost } from "../../../redux/actions/posts";
+import { deletePost, likePost } from "../../../redux/actions/posts";
 
 const useStyles = makeStyles({
   media: {
@@ -76,8 +76,12 @@ const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const handlePostDelete = React.useCallback(() => {
+  const handleDelete = React.useCallback(() => {
     dispatch(deletePost(post._id));
+  }, [post, dispatch]);
+
+  const handleLike = React.useCallback(() => {
+    dispatch(likePost(post._id));
   }, [post, dispatch]);
 
   return (
@@ -118,16 +122,11 @@ const Post = ({ post, setCurrentId }) => {
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button size="small" onClick={() => {}} className={classes.buttons}>
+        <Button size="small" onClick={handleLike} className={classes.buttons}>
           <ThumbUpAltIcon fontSize="small" />
-          Like
-          {post.likeCount}
+          {`Like (${post.likeCount})`}
         </Button>
-        <Button
-          size="small"
-          onClick={handlePostDelete}
-          className={classes.buttons}
-        >
+        <Button size="small" onClick={handleDelete} className={classes.buttons}>
           <DeleteIcon fontSize="small" />
           Delete
         </Button>
