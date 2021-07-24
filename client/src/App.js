@@ -30,12 +30,13 @@ const useStyles = makeStyles(() => ({
 }));
 
 function App() {
+  const [currentId, setCurrentId] = React.useState(null);
   const classes = useStyles();
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     dispatch(getPosts());
-  }, [dispatch]);
+  }, [dispatch, currentId]);
   return (
     <Container maxwidth="lg">
       <AppBar position="static" color="inherit" className={classes.appBar}>
@@ -58,10 +59,10 @@ function App() {
             spacing={3}
           >
             <Grid item xs={12} sm={7}>
-              <Posts />
+              <Posts currentId={currentId} setCurrentId={setCurrentId} />
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Form />
+              <Form currentId={currentId} setCurrentId={setCurrentId} />
             </Grid>
           </Grid>
         </Container>

@@ -1,9 +1,9 @@
 import React from "react";
-import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import FileBase from "react-file-base64";
+import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 
+import { createBase64Image } from "../../utils";
 import { createPost, updatePost } from "../../redux/actions/posts";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,65 +21,72 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   fileInput: {
-    width: "97%",
+    display: "flex",
+    justifyContent: "flex-end",
     margin: "10px 0",
+    width: "100%",
   },
   buttonSubmit: {
     backgroundColor: "#393E46",
+
     marginBottom: 10,
     "&:hover": {
       backgroundColor: "#393E46",
     },
   },
   buttonClear: {
-    color: "#fff",
-    backgroundColor: "#B89411",
+    color: "#B89411",
+    borderColor: "#B89411",
     "&:hover": {
-      backgroundColor: "#B89411",
+      borderColor: "#B89411",
     },
   },
 }));
 
-const Form = ({ currentId }) => {
-  const [postData, setPostData] = React.useState({
-    creator: "",
-    title: "",
-    message: "",
-    tags: "",
-    selectedFile: "",
-  });
-  // const post = useSelector((state) =>
-  //   currentId ? state.posts.find((message) => message._id === currentId) : null
-  // );
+const initialPostData = {
+  creator: "",
+  title: "",
+  message: "",
+  tags: "",
+  selectedFile: "",
+};
+
+const Form = ({ currentId, setCurrentId }) => {
+  const [postData, setPostData] = React.useState(initialPostData);
+  const getPost = useSelector((state) =>
+    currentId ? state.posts.find((post) => post._id === currentId) : null
+  );
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  // React.useEffect(() => {
-  //   if (post) setPostData(post);
-  // }, [post]);
+  React.useEffect(() => {
+    if (getPost) setPostData(getPost);
+  }, [getPost]);
 
-  const clear = () => {
-    // setCurrentId(0);
-    setPostData({
-      creator: "",
-      title: "",
-      message: "",
-      tags: "",
-      selectedFile: "",
-    });
+  const clearForm = () => {
+    setCurrentId(null);
+    setPostData(initialPostData);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(createPost(postData));
 
-    // if (currentId === 0) {
-    //   dispatch(createPost(postData));
-    //   clear();
-    // } else {
-    //   dispatch(updatePost(currentId, postData));
-    //   clear();
-    // }
+    currentId === null
+      ? dispatch(createPost(postData))
+      : dispatch(updatePost(currentId, postData));
+
+    clearForm();
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    createBase64Image(file)
+      .then((base64) => {
+        setPostData({ ...postData, selectedFile: base64 });
+      })
+      .catch((e) => {
+        console.log("Convert image to base64 error", e);
+      });
   };
 
   return (
@@ -91,8 +98,7 @@ const Form = ({ currentId }) => {
         onSubmit={handleSubmit}
       >
         <Typography variant="h6">
-          {/* {currentId ? `Editing "${post.title}"` : "Creating a Memory"} */}
-          Creating a Memory
+          {currentId ? `Editing "${getPost.title}"` : "Creating a Memory"}
         </Typography>
         <TextField
           name="creator"
@@ -135,13 +141,15 @@ const Form = ({ currentId }) => {
           }
         />
         <div className={classes.fileInput}>
-          <FileBase
-            type="file"
-            multiple={false}
-            onDone={({ base64 }) =>
-              setPostData({ ...postData, selectedFile: base64 })
-            }
-          />
+          <Button variant="outlined" component="label" size="large">
+            Upload File
+            <input
+              type="file"
+              hidden
+              accept="image/*"
+              onChange={handleImageUpload}
+            />
+          </Button>
         </div>
         <Button
           className={classes.buttonSubmit}
@@ -155,10 +163,9 @@ const Form = ({ currentId }) => {
         </Button>
         <Button
           className={classes.buttonClear}
-          variant="text"
-          // color="secondary"
+          variant="outlined"
           size="small"
-          onClick={clear}
+          onClick={clearForm}
           fullWidth
         >
           Clear

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Posts = () => {
+const Posts = ({ setCurrentId }) => {
   const classes = useStyles();
   const posts = useSelector((state) => state.posts);
   console.log("🚀 ~ Posts ~ posts", posts);
@@ -32,7 +32,7 @@ const Posts = () => {
     >
       {posts.map((post) => (
         <Grid item key={post._id} xs={12} sm={6}>
-          <Post post={post} />
+          <Post post={post} setCurrentId={setCurrentId} />
         </Grid>
       ))}
     </Grid>
