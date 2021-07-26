@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 import postRoutes from "./routes/posts.js";
 
 const app = express();
@@ -10,6 +11,14 @@ dotenv.config();
 app.use(express.json({ limit: "30mb" }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/build")));
+
+  app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+  });
+}
 
 app.use("/posts", postRoutes);
 
